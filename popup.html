@@ -15,7 +15,7 @@ function showTasks(tasks, status) {
   
   for (var i = 0, task; task = tasks[i]; i++) {
     url = LiquidChrome.showTaskUrl(task.id);
-    var taskHtml = $('<a target="_liquid_chrome" class="task"/>').text(task.name).attr({'href': url});
+    var taskHtml = $('<a target="_liquid_chrome" class="menu_item task"/>').text(task.name).attr({'href': url});
     taskHtml.click(function(){ window.location = url; });
     var info = "";
 
@@ -55,7 +55,7 @@ function showError(req, status, err) {
 }
 
 function showConfigureRequest(){
-  $('#popup .message').html( $('<a href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') );
+  $('#popup .message').html( $('<a class="menu_item" href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') );
 }
 
 $(document).ready(function(){

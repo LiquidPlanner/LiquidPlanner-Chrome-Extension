@@ -25,10 +25,13 @@ body#options{
   border-top: 1px groove Window;
 }
 
-.task {
-  padding: 6px 4px 4px 28px;
+.menu_item{
   display: block;
   text-decoration: none;
+  padding: 6px 4px 4px 28px;
+}
+
+.task {
   background: url('images/task.png') no-repeat 6px 6px;
   white-space: nowrap;
   overflow-x: hidden;
