@@ -14,7 +14,7 @@ function showTasks(tasks, status) {
   $('#popup .message').hide();
   
   for (var i = 0, task; task = tasks[i]; i++) {
-    url = LiquidChrome.showTaskUrl(task.id);
+    url = route(LiquidChrome.showTaskUrl, {task_id: task.id});
     var taskHtml = $('<a target="_liquid_chrome" class="menu_item task"/>').text(task.name).attr({'href': url});
     taskHtml.click(function(){ window.location = url; });
     var info = "";
@@ -49,26 +49,26 @@ function showTasks(tasks, status) {
   }
 }
 
-function showError(req, status, err) {  
+function showError(req, status, err) {
   console.log(req, status, err);
   $(document.body).append('Could not access LiquidPlanner.');
 }
 
 function showConfigureRequest(){
-  $('#popup .message').html( $('<a class="menu_item" href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') );
+  $('#popup .message').html( 
+    $('<a class="menu_item" href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') 
+  );
 }
 
 $(document).ready(function(){
-  if(LiquidChrome.isConfigured()){
-    var url = LiquidChrome.tasksUrl();
-  
-    $.ajax({
-      url: url,
-      data: {filter: ['owner_id = me', 'done is false']},
-      dataType: 'json',
-      success: showTasks,
-      error: showError
-    });
+  if(LiquidChrome.isConfigured()){    
+    LiquidChrome.tasks({
+      success:  showTasks,
+      error:    showError, 
+      data:{
+        filter:   ['owner_id = me', 'done is false']
+    }});
+    
   } else {
     showConfigureRequest();
   }

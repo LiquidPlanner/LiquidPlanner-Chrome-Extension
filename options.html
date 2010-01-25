@@ -13,7 +13,7 @@ function showError(req, status, err) {
 
 function showWorkSpaces(spaces, status) {
   var html = $('#workspaces');
-  var currentId = LiquidChrome.defaults.spaceId;
+  var currentId = LiquidChrome.defaults.space_id;
   
   for (var i = 0, space; space = spaces[i]; i++) {
     var opt = $('<option>').attr('value', space.id).text(space.name)
@@ -26,20 +26,11 @@ function showWorkSpaces(spaces, status) {
 
 function updateSpaceId(){
   var spaceId = $('#workspaces').get(0).value;
-  localStorage['spaceId'] = spaceId;
+  localStorage.space_id = spaceId;
 }
 
 $(document).ready(function(){
-  var url = LiquidChrome.workSpaceUrl();
-  console.log('loading', url);
-  
-  $.ajax({
-    url: url,
-    dataType: 'json',
-    success: showWorkSpaces,
-    error: showError
-  });
-  
+  LiquidChrome.workspaces({success: showWorkSpaces, error: showError});
   $('#workspaces').change(updateSpaceId);
 });
 
