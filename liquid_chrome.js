@@ -1,8 +1,13 @@
 LiquidChrome = {};
 var defaults = {
-  server: 'https://app.liquidplanner.com',
-  spaceId: 1
+  server: 'https://app.liquidplanner.com'
 };
+
+var options = ['spaceId'];
+for(var i = 0, opt; opt = options[i]; i++) {
+  var value = localStorage[opt];
+  if(value) defaults[opt] = value;
+}
 
 LiquidChrome.workSpaceUrl = function(spaceId){
   return defaults.server + '/api/workspaces/'+(spaceId||'');
@@ -16,10 +21,8 @@ LiquidChrome.showTaskUrl = function(taskId){
   return defaults.server + '/space/'+ spaceId + '/collaborate/show/'+taskId;
 };
 
-var options = ['spaceId'];
-for(var i = 0, opt; opt = options[i]; i++) {
-  var value = localStorage[opt];
-  if(value) defaults[opt] = value;
-}
+LiquidChrome.isConfigured = function(){
+  return !!defaults.spaceId;
+};
 
 LiquidChrome.defaults = defaults;

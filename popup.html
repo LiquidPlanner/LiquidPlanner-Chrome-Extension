@@ -3,7 +3,7 @@
 <title>LiquidChrome Options</title>
 <link rel="stylesheet" href="/style.css" type="text/css" charset="utf-8">
 <script src='jquery-1.3.1.js'></script>
-<script src='defaults.js'></script>
+<script src='liquid_chrome.js'></script>
 <script>
 function showTasks(tasks, status) {
   var task;
@@ -11,7 +11,7 @@ function showTasks(tasks, status) {
   var pending_tasks = $('#tasks');
   var done_tasks = $('#done_tasks')
   
-  pending_tasks.html('');
+  $('#popup .message').hide();
   
   for (var i = 0, task; task = tasks[i]; i++) {
     url = LiquidChrome.showTaskUrl(task.id);
@@ -50,19 +50,28 @@ function showTasks(tasks, status) {
 }
 
 function showError(req, status, err) {  
+  console.log(req, status, err);
   $(document.body).append('Could not access LiquidPlanner.');
 }
 
+function showConfigureRequest(){
+  $('#popup .message').html( $('<a href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') );
+}
+
 $(document).ready(function(){
-  var url = LiquidChrome.tasksUrl();
+  if(LiquidChrome.isConfigured()){
+    var url = LiquidChrome.tasksUrl();
   
-  $.ajax({
-    url: url,
-    data: {filter: ['owner_id = me', 'done is false']},
-    dataType: 'json',
-    success: showTasks,
-    error: showError
-  });
+    $.ajax({
+      url: url,
+      data: {filter: ['owner_id = me', 'done is false']},
+      dataType: 'json',
+      success: showTasks,
+      error: showError
+    });
+  } else {
+    showConfigureRequest();
+  }
 });
 </script>
 </head>
