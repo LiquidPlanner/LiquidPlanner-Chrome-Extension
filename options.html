@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>LiquidChrome Options</title>
+<link rel="stylesheet" href="/style.css" type="text/css" charset="utf-8">
+<script src='jquery-1.3.1.js'></script>
+<script src='defaults.js'></script>
+
+<script type="text/javascript">
+
+function showError(req, status, err) {  
+  $(document.body).append('Could not access LiquidPlanner.');
+}
+
+function showWorkSpaces(spaces, status) {
+  var html = $('#workspaces');
+  var currentId = LiquidChrome.defaults.spaceId;
+  
+  for (var i = 0, space; space = spaces[i]; i++) {
+    var opt = $('<option>').attr('value', space.id).text(space.name)
+    if(space.id == currentId){opt.attr('selected', 'selected');}
+    html.append(opt);
+  }
+}
+
+function updateSpaceId(){
+  var spaceId = $('#workspaces :selected').get(0).value;
+  localStorage['spaceId'] = spaceId;
+}
+
+$(document).ready(function(){
+  var url = LiquidChrome.workSpaceUrl();
+  console.log('loading', url);
+  
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    success: showWorkSpaces,
+    error: showError
+  });
+  
+  $('#workspaces').change(updateSpaceId);
+});
+
+</script>
+</head>
+<body id='options'>
+
+<h1>LiquidChrome Options</h1>
+<div class='option'>
+  <lable>Primary Workspace: <select id="workspaces"></select></lable>
+  <p class='info'>
+    This workspace will be used to list tasks on the LiquidChrome menu (<img src='favicon.ico'/>)
+  </p>
+</div>
+</body>
+</html>

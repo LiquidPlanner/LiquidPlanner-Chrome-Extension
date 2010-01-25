@@ -1,0 +1,53 @@
+body {
+  font: 10pt Helvetica, Arial, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+body#popup{
+  min-width: 357px;
+  max-width: 400px;
+}
+
+body#options{
+  margin: 2em;
+}
+
+.message{
+  color: GrayText;
+}
+
+#tasks, #done_tasks{
+  margin: 4px 0px;
+}
+
+#done_tasks{
+  border-top: 1px groove Window;
+}
+
+.task {
+  padding: 6px 4px 4px 28px;
+  display: block;
+  text-decoration: none;
+  background: url('images/task.png') no-repeat 6px 6px;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.task.red_flag{     background-image: url('images/red_flag.png');    }
+.task.yellow_flag{  background-image: url('images/yellow_flag.png'); }
+#done_tasks .task{  background-image: url('images/done.png'); color: GrayText; }
+
+.task .info {
+  font-size: smaller;
+  color: GrayText;
+}
+
+a, a:visited {
+  color:ButtonText;
+}
+a:hover {
+  background-color: Highlight; color: HighlightText
+}
+
+.info { color: GrayText; }

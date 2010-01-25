@@ -1,0 +1,14 @@
+General:
+- If a workspace has not been chosen yet, direct the user to the options page
+- Limits on done items shown
+- Limits on pending items shown
+- Include chatter @maybe
+
+Notifications:
+- Change icon when there are red flagged items @maybe
+- New task notification @maybe
+- New chatter notification @maybe
+
+Task Management:
+- Mark done via menu
+- Log time via menu

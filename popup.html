@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>LiquidChrome Options</title>
+<link rel="stylesheet" href="/style.css" type="text/css" charset="utf-8">
+<script src='jquery-1.3.1.js'></script>
+<script src='defaults.js'></script>
+<script>
+function showTasks(tasks, status) {
+  var task;
+  var url;
+  var pending_tasks = $('#tasks');
+  var done_tasks = $('#done_tasks')
+  
+  pending_tasks.html('');
+  
+  for (var i = 0, task; task = tasks[i]; i++) {
+    url = LiquidChrome.showTaskUrl(task.id);
+    var taskHtml = $('<a target="_liquid_chrome" class="task"/>').text(task.name).attr({'href': url});
+    taskHtml.click(function(){ window.location = url; });
+    var info = "";
+
+    if(task.low_effort_remaining && task.high_effort_remaining){
+      info += 'estimate: ' + task.low_effort_remaining + '-' + task.high_effort_remaining;
+    }
+    
+    if(task.promise_by){
+      info += " due: " + task.promise_by.split("T")[0];
+    }
+    
+    if(task.alerts && task.alerts.length > 0){
+      var flags = {}
+      for(var a = 0, alert; alert = task.alerts[a]; a++){
+        flags[alert.flag] = true
+      }
+      if(flags['red']){
+        taskHtml.addClass("red_flag");
+      } else if(flags['yellow']){
+        taskHtml.addClass("yellow_flag");
+      }
+    }
+    
+    var infoHtml = $('<div class="info">').text(info);
+    
+    (task.is_done ? done_tasks : pending_tasks).append(taskHtml.append(infoHtml));    
+  }
+
+  if(done_tasks.find('.task').size() > 0){
+    done_tasks.show();
+  }
+}
+
+function showError(req, status, err) {  
+  $(document.body).append('Could not access LiquidPlanner.');
+}
+
+$(document).ready(function(){
+  var url = LiquidChrome.tasksUrl();
+  
+  $.ajax({
+    url: url,
+    data: {filter: ['owner_id = me', 'done is false']},
+    dataType: 'json',
+    success: showTasks,
+    error: showError
+  });
+});
+</script>
+</head>
+<body id='popup'>
+  <div id='tasks'>
+  <div class='message'>Loading...</div>
+  </div>
+  <div style='display: none;' id='done_tasks'></div>
+</body>
+</html>
