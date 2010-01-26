@@ -1,8 +1,8 @@
 Features:
   General:
   - If a workspace has not been chosen yet, direct the user to the options page @done
-  - Limits on done items shown
-  - Limits on pending items shown
+  - Limits on done items shown @done
+  - Limits on pending items shown @done
   - Include chatter @maybe
 
   Notifications:
@@ -16,4 +16,4 @@ Features:
   
 Polish:
 - Replace favicon.ico with alpha masked png @done
-- Cleanup JS
+- Cleanup JS @done

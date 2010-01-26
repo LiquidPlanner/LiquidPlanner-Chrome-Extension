@@ -6,10 +6,9 @@
 <script src='liquid_chrome.js'></script>
 <script>
 function showTasks(tasks, status) {
-  var task;
   var url;
   var pending_tasks = $('#tasks');
-  var done_tasks = $('#done_tasks')
+  var done_tasks = $('#done_tasks');
   
   $('#popup .message').hide();
   
@@ -28,9 +27,9 @@ function showTasks(tasks, status) {
     }
     
     if(task.alerts && task.alerts.length > 0){
-      var flags = {}
+      var flags = {};
       for(var a = 0, alert; alert = task.alerts[a]; a++){
-        flags[alert.flag] = true
+        flags[alert.flag] = true;
       }
       if(flags['red']){
         taskHtml.addClass("red_flag");
@@ -66,7 +65,18 @@ $(document).ready(function(){
       success:  showTasks,
       error:    showError, 
       data:{
-        filter:   ['owner_id = me', 'done is false']
+        'filter[]': ['owner_id = me', 'done is false'],
+        'limit':    LiquidChrome.defaults.pendingCount,
+        'order':    'earliest_start'
+    }});
+    
+    LiquidChrome.tasks({
+      success:  showTasks,
+      error:    showError, 
+      data:{
+        'filter[]': ['owner_id = me', 'done is true'],
+        'limit':    LiquidChrome.defaults.doneCount,
+        'order':    'updated_at'
     }});
     
   } else {

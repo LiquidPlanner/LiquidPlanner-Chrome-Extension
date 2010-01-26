@@ -1,18 +1,27 @@
 LiquidChrome = {};
-
-// Set up the defaults for LiquidChrome.  At the moment, these are all just
-// used for routing:
-var defaults = {
-  space_id: null,
-  host: 'https://app.liquidplanner.com',
-  api_path: 'api'
+LiquidChrome.saveOptions = function(){
+  localStorage.options = JSON.stringify(LiquidChrome.defaults);
 };
 
-// initialize any defaults we have stored in localStorage
-for(key in defaults) {
-  var value = localStorage[key];
-  if(value) defaults[key] = value;
-}
+LiquidChrome.loadOptions = function(){
+  var defaults = {
+    url: {
+      space_id: null,
+      host: 'https://app.liquidplanner.com',
+      api_path: 'api'
+    },
+    
+    pendingCount: 10,
+    doneCount: 3
+  };
+  
+  LiquidChrome.defaults = $.extend(defaults, JSON.parse(localStorage.options || '{}'));
+};
+
+LiquidChrome.resetOptions = function(){
+  delete localStorage.options;
+  LiquidChrome.loadOptions();
+};
 
 /**
   Helper method for routing urls, takes in a url in the form:
@@ -21,7 +30,7 @@ for(key in defaults) {
 */
 function route(url, params){
   // mix in the default space_id, host, and api_path
-  params = $.extend({}, defaults, params);
+  params = $.extend({}, LiquidChrome.defaults.url, params);
   // then replace keys as needed
   for(k in params){ url = url.replace(':'+k, params[k]); }
   return url;
@@ -32,17 +41,22 @@ function route(url, params){
 */
 function resource(url){
   res = function(options){
-    var baseOptions = {
-      'url': route(url, options.params),
-      dataType: 'json'
-    };
-    
-    $.ajax($.extend(baseOptions, options));
+    $.ajax($.extend({'url': route(url, options.params), dataType: 'json'}, options));
   };
   
   res.url = url;
   return res;
 };
+
+/**
+  A helper method for determining whether the extension has been configured yet.
+*/
+LiquidChrome.isConfigured = function(){
+  return !!LiquidChrome.defaults.url.space_id;
+};
+
+// Load any stored options
+LiquidChrome.loadOptions();
 
 // Set up some default resources
 LiquidChrome.tasks      = resource(':host/:api_path/workspaces/:space_id/tasks/');
@@ -52,12 +66,3 @@ LiquidChrome.workspace  = resource(':host/:api_path/workspaces/:space_id');
 
 // Add a url we will use later to show tasks in LiquidPlanner
 LiquidChrome.showTaskUrl= ':host/space/:space_id/organize/show/:task_id';
-
-/**
-  A helper method for determining whether the extension has been configured yet.
-*/
-LiquidChrome.isConfigured = function(){
-  return !!defaults.space_id;
-};
-
-LiquidChrome.defaults = defaults;
