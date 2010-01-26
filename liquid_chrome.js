@@ -12,7 +12,8 @@ LiquidChrome.loadOptions = function(){
     },
     
     pendingCount: 10,
-    doneCount: 3
+    doneCount: 3,
+    commentCount: 5
   };
   
   LiquidChrome.defaults = $.extend(defaults, JSON.parse(localStorage.options || '{}'));

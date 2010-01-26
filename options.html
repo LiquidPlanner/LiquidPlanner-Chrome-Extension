@@ -41,6 +41,7 @@ function saveIntegerOption(name){
 $(document).ready(function(){
   LiquidChrome.workspaces({success: showWorkSpaces, error: showError});
   $('#workspaces').change(updateSpaceId);
+  $('#commentCount').val(LiquidChrome.defaults.doneCount).change(saveIntegerOption('commentCount'));
   $('#doneCount').val(LiquidChrome.defaults.doneCount).change(saveIntegerOption('doneCount'));
   $('#pendingCount').val(LiquidChrome.defaults.pendingCount).change(saveIntegerOption('pendingCount'));
   $('#showAdvancedOptions').click(function(){ $(this).hide(); $('#advancedOptions').toggle('slide'); });
@@ -66,12 +67,14 @@ $(document).ready(function(){
     And by advanced, we really mean options that should work fine the way they are.
   </p>
   <div class='option'>
+    <label>Show <input type='text' id="commentCount"/> comments</label>
+  </div>
+  <div class='option'>
     <label>Show <input type='text' id="pendingCount"/> upcoming items</label>
   </div>
   <div class='option'>
     <label>Show <input type='text' id="doneCount"/> done items</label>
   </div>
-
   <br/>
   <div class='option'>
     <a id='resetOptions' href='options.html'>Reset to defaults</a>

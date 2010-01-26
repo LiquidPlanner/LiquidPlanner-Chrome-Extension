@@ -53,7 +53,7 @@ function showComments(comments, status) {
   for (var i = 0, comment; comment = comments[i]; i++) {
     html = baseTemplate.clone();
     url = route(LiquidChrome.showTaskUrl, {task_id: comment.item_id});
-    text = comment.plain_text.slice(0,120);
+    text = comment.plain_text.slice(0,72);
     if(text != comment.plain_text){
       text = text + '...';
     }
@@ -82,39 +82,45 @@ function showConfigureRequest(){
 }
 
 $(document).ready(function(){  
-  if(LiquidChrome.isConfigured()){  
-    LiquidChrome.tasks({
-      success:  showTasks,
-      error:    showError, 
-      data:{
-        'filter[]': ['owner_id = me', 'done is false'],
-        'limit':    LiquidChrome.defaults.pendingCount,
-        'order':    'earliest_start'
-    }});
+  if(LiquidChrome.isConfigured()){
+    if(LiquidChrome.defaults.pendingCount > 0){
+      LiquidChrome.tasks({
+        success:  showTasks,
+        error:    showError, 
+        data:{
+          'filter[]': ['owner_id = me', 'done is false'],
+          'limit':    LiquidChrome.defaults.pendingCount,
+          'order':    'earliest_start'
+      }});
+    }
     
-    LiquidChrome.tasks({
-      success:  showTasks,
-      error:    showError, 
-      data:{
-        'filter[]': ['owner_id = me', 'done is true'],
-        'limit':    LiquidChrome.defaults.doneCount,
-        'order':    'updated_at'
-    }});
+    if(LiquidChrome.defaults.doneCount > 0){
+      LiquidChrome.tasks({
+        success:  showTasks,
+        error:    showError, 
+        data:{
+          'filter[]': ['owner_id = me', 'done is true'],
+          'limit':    LiquidChrome.defaults.doneCount,
+          'order':    'updated_at'
+      }});
+    }
     
-    LiquidChrome.members({
-      error: showError,
-      success: function(members){
-        storeMembers(members);
+    if(LiquidChrome.defaults.commentCount > 0){
+      LiquidChrome.members({
+        error: showError,
+        success: function(members){
+          storeMembers(members);
         
-        LiquidChrome.chatter({
-          success:  showComments,
-          error:    showError, 
-          data:{
-            'ignore_mine': false,
-            'limit':    5 //LiquidChrome.defaults.commentCount,
-        }});
-      }
-    });
+          LiquidChrome.chatter({
+            success:  showComments,
+            error:    showError, 
+            data:{
+              'ignore_mine': false,
+              'limit':       LiquidChrome.defaults.commentCount
+          }});
+        }
+      });
+    }
     
   } else {
     showConfigureRequest();
