@@ -6,51 +6,43 @@
 <script src='liquid_chrome.js'></script>
 <script>
 function showTasks(tasks, status) {
-  var url;
-  var pending_tasks = $('#tasks');
+  var url, html;
+  var pending_tasks = $('#pending_tasks');
   var done_tasks = $('#done_tasks');
+  var baseTemplate = $('#templates .task');
   
   $('#popup .message').hide();
   
   for (var i = 0, task; task = tasks[i]; i++) {
+    html = baseTemplate.clone();
     url = route(LiquidChrome.showTaskUrl, {task_id: task.id});
-    var taskHtml = $('<a target="_liquid_chrome" class="menu_item task"/>').text(task.name).attr({'href': url});
-    taskHtml.click(function(){ window.location = url; });
-    var info = "";
-
+    
+    html.attr({'href': url}).find('.name').text(task.name);
+    
     if(task.low_effort_remaining && task.high_effort_remaining){
-      info += 'estimate: ' + task.low_effort_remaining + '-' + task.high_effort_remaining;
+      html.find('.estimate').text('estimate: ' + task.low_effort_remaining + '-' + task.high_effort_remaining);
     }
     
     if(task.promise_by){
-      info += " due: " + task.promise_by.split("T")[0];
+      var date = task.promise_by.split("T")[0];
+      html.find('.promise').text('due: ' + date);
     }
     
     if(task.alerts && task.alerts.length > 0){
-      var flags = {};
-      for(var a = 0, alert; alert = task.alerts[a]; a++){
-        flags[alert.flag] = true;
-      }
-      if(flags['red']){
-        taskHtml.addClass("red_flag");
-      } else if(flags['yellow']){
-        taskHtml.addClass("yellow_flag");
-      }
+      var severity = {'red': 2, 'yellow': 1, 'none': 0};
+      var flag = task.alerts.reduce(function(prev, alert){ 
+        var curr = alert.flag;
+        return severity[prev] > severity[curr] ? prev : curr;
+      }, 'none');
+      html.addClass(flag+'_flag');
     }
-    
-    var infoHtml = $('<div class="info">').text(info);
-    
-    (task.is_done ? done_tasks : pending_tasks).append(taskHtml.append(infoHtml));    
+        
+    (task.is_done ? done_tasks : pending_tasks).append(html);    
   }
 
   if(done_tasks.find('.task').size() > 0){
     done_tasks.show();
   }
-}
-
-function showError(req, status, err) {
-  console.log(req, status, err);
-  $(document.body).append('Could not access LiquidPlanner.');
 }
 
 function showConfigureRequest(){
@@ -84,11 +76,33 @@ $(document).ready(function(){
   }
 });
 </script>
+
 </head>
 <body id='popup'>
-  <div id='tasks'>
-  <div class='message'>Loading...</div>
+  <div id='nav'>
+    <div class='tab' id='tasks_nav'>tasks</div>
+    <div class='tab' id='chatter_nav'>chatter</div>
+    <div style='clear:left;'></div>
   </div>
-  <div style='display: none;' id='done_tasks'></div>
+  
+  <div class='message'>Loading...</div>
+  
+  <div id='tasks'>
+    <div id='pending_tasks'></div>
+    <div id='done_tasks' style='display: none;'></div>
+  </div>
+  
+  <div id='chatter'>
+  </div>
+  
+  <div style='display: none' id='templates'>
+    <a class='task menu_item' target='_liquid_chrome' href=''>
+      <span class='name'>{name}</span>
+      <div  class='info'>
+        <span class='estimate'></span>
+        <span class='promise'></span>
+      </div>
+    </a>
+  </div>
 </body>
 </html>

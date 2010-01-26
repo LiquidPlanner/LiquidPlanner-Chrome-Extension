@@ -66,3 +66,12 @@ LiquidChrome.workspace  = resource(':host/:api_path/workspaces/:space_id');
 
 // Add a url we will use later to show tasks in LiquidPlanner
 LiquidChrome.showTaskUrl= ':host/space/:space_id/organize/show/:task_id';
+
+/**
+  Generic AJAX error handler.
+*/
+function showError(req, status, err) {  
+  console.log(req, status, err);
+  console.log('configuration:', LiquidChrome.defaults);
+  $(document.body).append('<div class="error">Could not access LiquidPlanner.</div>');
+}

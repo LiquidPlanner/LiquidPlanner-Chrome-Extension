@@ -13,6 +13,32 @@ body#options{
   margin: 2em;
 }
 
+#nav{
+  font-size: smaller;
+  text-align: center;
+  width: 97px;
+  margin: auto;
+  -webkit-border-radius: 2px;
+  border: 1px solid #AAB8CD;
+}
+
+#nav .tab{
+  width: 48px;
+  height: 16px;
+  float: left;
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#D9E6F6), color-stop(0.2, #D9E6F6), color-stop(0.8, #B9C8DE));
+  cursor: pointer;
+}
+
+#nav .tab:hover,
+#nav .tab.selected{
+  background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#E1EFFF), color-stop(0.2, #E1EFFF), color-stop(0.8, #C6D6EE));
+}
+
+#nav .tab + .tab{
+  border-left: 1px solid #fff;
+}
+
 .message{
   color: GrayText;
 }
@@ -54,3 +80,4 @@ a:hover {
 }
 
 .info { color: GrayText; }
+.error{ color: red; }
