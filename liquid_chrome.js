@@ -63,6 +63,8 @@ LiquidChrome.tasks      = resource(':host/:api_path/workspaces/:space_id/tasks/'
 LiquidChrome.task       = resource(':host/:api_path/workspaces/:space_id/tasks/:task_id');
 LiquidChrome.workspaces = resource(':host/:api_path/workspaces/');
 LiquidChrome.workspace  = resource(':host/:api_path/workspaces/:space_id');
+LiquidChrome.members    = resource(':host/:api_path/workspaces/:space_id/members');
+LiquidChrome.chatter    = resource(':host/:api_path/workspaces/:space_id/chatter');
 
 // Add a url we will use later to show tasks in LiquidPlanner
 LiquidChrome.showTaskUrl= ':host/space/:space_id/organize/show/:task_id';

@@ -40,8 +40,38 @@ function showTasks(tasks, status) {
     (task.is_done ? done_tasks : pending_tasks).append(html);    
   }
 
-  if(done_tasks.find('.task').size() > 0){
-    done_tasks.show();
+  if(done_tasks.find('.task').size() > 0){done_tasks.show();}
+}
+
+function showComments(comments, status) {
+  var url, text, html, author;
+  var chatter = $('#comments');
+  var baseTemplate = $('#templates .comment');
+    
+  $('#popup .message').hide();
+  
+  for (var i = 0, comment; comment = comments[i]; i++) {
+    html = baseTemplate.clone();
+    url = route(LiquidChrome.showTaskUrl, {task_id: comment.item_id});
+    text = comment.plain_text.slice(0,120);
+    if(text != comment.plain_text){
+      text = text + '...';
+    }
+    
+    html.attr({'href': url}).find('.text').text(text);
+    author = LiquidChrome.members[comment.member_id] || LiquidChrome.members[0];
+    if(author){ 
+      html.find('.author').text(author.user_name); 
+    }
+    
+    chatter.append(html);
+  }
+}
+
+function storeMembers(members){
+  LiquidChrome.members = {};
+  for (var i = 0, member; member = members[i]; i++) {
+    LiquidChrome.members[member.id] = member;
   }
 }
 
@@ -51,8 +81,8 @@ function showConfigureRequest(){
   );
 }
 
-$(document).ready(function(){
-  if(LiquidChrome.isConfigured()){    
+$(document).ready(function(){  
+  if(LiquidChrome.isConfigured()){  
     LiquidChrome.tasks({
       success:  showTasks,
       error:    showError, 
@@ -71,6 +101,21 @@ $(document).ready(function(){
         'order':    'updated_at'
     }});
     
+    LiquidChrome.members({
+      error: showError,
+      success: function(members){
+        storeMembers(members);
+        
+        LiquidChrome.chatter({
+          success:  showComments,
+          error:    showError, 
+          data:{
+            'ignore_mine': false,
+            'limit':    5 //LiquidChrome.defaults.commentCount,
+        }});
+      }
+    });
+    
   } else {
     showConfigureRequest();
   }
@@ -78,21 +123,15 @@ $(document).ready(function(){
 </script>
 
 </head>
-<body id='popup'>
-  <div id='nav'>
-    <div class='tab' id='tasks_nav'>tasks</div>
-    <div class='tab' id='chatter_nav'>chatter</div>
-    <div style='clear:left;'></div>
-  </div>
-  
+<body id='popup'>  
   <div class='message'>Loading...</div>
+  
+  <div id='comments'>
+  </div>
   
   <div id='tasks'>
     <div id='pending_tasks'></div>
     <div id='done_tasks' style='display: none;'></div>
-  </div>
-  
-  <div id='chatter'>
   </div>
   
   <div style='display: none' id='templates'>
@@ -103,6 +142,14 @@ $(document).ready(function(){
         <span class='promise'></span>
       </div>
     </a>
+    
+    <a class='comment menu_item' target='_liquid_chrome' href=''>
+      <div class='text'>{comment}</div>
+      <div class='info'>
+          <span class='author'></span>
+      </div>
+    </a>
+    
   </div>
 </body>
 </html>

@@ -13,32 +13,6 @@ body#options{
   margin: 2em;
 }
 
-#nav{
-  font-size: smaller;
-  text-align: center;
-  width: 97px;
-  margin: auto;
-  -webkit-border-radius: 2px;
-  border: 1px solid #AAB8CD;
-}
-
-#nav .tab{
-  width: 48px;
-  height: 16px;
-  float: left;
-  background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#D9E6F6), color-stop(0.2, #D9E6F6), color-stop(0.8, #B9C8DE));
-  cursor: pointer;
-}
-
-#nav .tab:hover,
-#nav .tab.selected{
-  background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#E1EFFF), color-stop(0.2, #E1EFFF), color-stop(0.8, #C6D6EE));
-}
-
-#nav .tab + .tab{
-  border-left: 1px solid #fff;
-}
-
 .message{
   color: GrayText;
 }
@@ -55,6 +29,11 @@ body#options{
   display: block;
   text-decoration: none;
   padding: 6px 4px 4px 28px;
+}
+
+.comment{
+  overflow: hidden;
+  background: url('images/comment.png') no-repeat 6px 6px;
 }
 
 .task {
@@ -76,7 +55,7 @@ a, a:visited {
   color:ButtonText;
 }
 a:hover {
-  background-color: Highlight; color: HighlightText
+  background-color: Highlight; color: HighlightText;
 }
 
 .info { color: GrayText; }
