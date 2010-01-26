@@ -45,7 +45,7 @@ function showTasks(tasks, status) {
 
 // Extracts data from each comment's JSON data, and inserts it into the menu
 function showComments(comments, status) {
-  var url, text, html, author;
+  var url, text, html, author, task;
   var chatter = $('#comments');
   var baseTemplate = $('#templates .comment');
     
@@ -61,8 +61,13 @@ function showComments(comments, status) {
     
     html.attr({'href': url}).find('.text').text(text);
     author = LiquidChrome.members[comment.member_id] || LiquidChrome.members[0];
+    task   = comment.treeitem;
     if(author){ 
       html.find('.author').text(author.user_name); 
+    }
+    
+    if(task){
+      html.find('.taskname').text('on: '+task.name); 
     }
     
     chatter.append(html);
@@ -156,7 +161,7 @@ $(document).ready(function(){
     <a class='comment menu_item' target='_liquid_chrome' href=''>
       <div class='text'>{comment}</div>
       <div class='info'>
-          <span class='author'></span>
+          <span class='author'></span> <span class='taskname'></span>
       </div>
     </a>
     

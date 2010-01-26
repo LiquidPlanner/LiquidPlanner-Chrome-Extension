@@ -8,6 +8,7 @@
     "popup": "popup.html"
   },
   "permissions": [
-    "https://app.liquidplanner.com/"
+    "https://*.liquidplanner.com/",
+    "https://*.liquidplannerlab.com/"
   ]
 }

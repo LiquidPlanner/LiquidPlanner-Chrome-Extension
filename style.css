@@ -65,6 +65,8 @@ body#options{
 .task .info,
 .comment .info {
   font-size: 0.8em;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 
 a, a:visited {
