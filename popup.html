@@ -5,6 +5,8 @@
 <script src='jquery-1.3.1.js'></script>
 <script src='liquid_chrome.js'></script>
 <script>
+
+// Extracts data from each task's JSON data, and inserts it into the menu
 function showTasks(tasks, status) {
   var url, html;
   var pending_tasks = $('#pending_tasks');
@@ -39,10 +41,9 @@ function showTasks(tasks, status) {
         
     (task.is_done ? done_tasks : pending_tasks).append(html);    
   }
-
-  if(done_tasks.find('.task').size() > 0){done_tasks.show();}
 }
 
+// Extracts data from each comment's JSON data, and inserts it into the menu
 function showComments(comments, status) {
   var url, text, html, author;
   var chatter = $('#comments');
@@ -68,6 +69,7 @@ function showComments(comments, status) {
   }
 }
 
+// Stores the members as a hash.  This is used to display the member's name in comments.
 function storeMembers(members){
   LiquidChrome.members = {};
   for (var i = 0, member; member = members[i]; i++) {
@@ -115,7 +117,8 @@ $(document).ready(function(){
             success:  showComments,
             error:    showError, 
             data:{
-              'ignore_mine': false,
+              'ignore_mine': LiquidChrome.defaults.ignoreMyComments,
+              'for_me':      !LiquidChrome.defaults.showAllComments,
               'limit':       LiquidChrome.defaults.commentCount
           }});
         }
@@ -137,9 +140,10 @@ $(document).ready(function(){
   
   <div id='tasks'>
     <div id='pending_tasks'></div>
-    <div id='done_tasks' style='display: none;'></div>
+    <div id='done_tasks'></div>
   </div>
   
+  <!-- The following are templates used to render Tasks and Comments -->
   <div style='display: none' id='templates'>
     <a class='task menu_item' target='_liquid_chrome' href=''>
       <span class='name'>{name}</span>

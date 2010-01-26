@@ -30,9 +30,19 @@ function saveIntegerOption(name){
   return function(){
     var input = $('#'+name);
     var val = parseInt(input.val(),10);
-    val = Math.max(0,val);
+    val = val > 0 ? val : 0;
     input.val(val);
     
+    LiquidChrome.defaults[name] = val;
+    LiquidChrome.saveOptions();
+  };
+}
+
+function saveBooleanOption(name){
+  return function(){
+    var input = $('#'+name);
+    var val = input.attr('checked')
+
     LiquidChrome.defaults[name] = val;
     LiquidChrome.saveOptions();
   };
@@ -41,9 +51,13 @@ function saveIntegerOption(name){
 $(document).ready(function(){
   LiquidChrome.workspaces({success: showWorkSpaces, error: showError});
   $('#workspaces').change(updateSpaceId);
-  $('#commentCount').val(LiquidChrome.defaults.doneCount).change(saveIntegerOption('commentCount'));
+  // Setup serializing and deserializing advanced options
+  $('#commentCount').val(LiquidChrome.defaults.commentCount).change(saveIntegerOption('commentCount'));
   $('#doneCount').val(LiquidChrome.defaults.doneCount).change(saveIntegerOption('doneCount'));
   $('#pendingCount').val(LiquidChrome.defaults.pendingCount).change(saveIntegerOption('pendingCount'));
+  $('#showAllComments').attr('checked', LiquidChrome.defaults.showAllComments).change(saveBooleanOption('showAllComments'));
+  
+  // Hookup page controls
   $('#showAdvancedOptions').click(function(){ $(this).hide(); $('#advancedOptions').toggle('slide'); });
   $('#resetOptions').click(LiquidChrome.resetOptions);
 });
@@ -53,32 +67,45 @@ $(document).ready(function(){
 <body id='options'>
 
 <h1>LiquidChrome Options</h1>
-<div class='option'>
-  <label>Use Workspace: <select id="workspaces"></select></label>
-  <p class='info'>
-    This workspace will be used to list tasks on the LiquidChrome menu (<img src='icon.png'/>)
-  </p>
-</div>
+<form>
+  <div class='option'>
+    <label>Use Workspace: <select id="workspaces"></select></label>
+    <p class='info'>
+      This workspace will be used to list tasks on the LiquidChrome menu (<img src='icon.png'/>)
+    </p>
+  </div>
 
-<br/>
-<a href='#' id='showAdvancedOptions'>Advanced options...</a>
-<div id='advancedOptions' style='display: none'>
-  <p class='info'>
-    And by advanced, we really mean options that should work fine the way they are.
-  </p>
-  <div class='option'>
-    <label>Show <input type='text' id="commentCount"/> comments</label>
-  </div>
-  <div class='option'>
-    <label>Show <input type='text' id="pendingCount"/> upcoming items</label>
-  </div>
-  <div class='option'>
-    <label>Show <input type='text' id="doneCount"/> done items</label>
-  </div>
   <br/>
-  <div class='option'>
-    <a id='resetOptions' href='options.html'>Reset to defaults</a>
+  <a href='#' id='showAdvancedOptions'>Advanced options...</a>
+  <div id='advancedOptions' style='display: none'>
+    <p class='info'>
+      And by advanced, we really mean options that should work fine the way they are.
+    </p>
+    
+    <fieldset>
+      <legend>Comments</legend>
+      <div class='option'>
+        <label>Show <input type='text' id="commentCount"/> comments</label>
+      </div>
+      <div class='option'>
+        <label><input type='checkbox' id="showAllComments">Show comments for all users</label>
+      </div>
+    </fieldset>
+    
+    <fieldset>
+      <legend>Tasks</legend>
+      <div class='option'>
+        <label>Show <input type='text' id="pendingCount"/> upcoming items</label>
+      </div>
+      <div class='option'>
+        <label>Show <input type='text' id="doneCount"/> done items</label>
+      </div>
+    </fieldset>
+    <br/>
+    <div class='option'>
+      <a id='resetOptions' href='options.html'>Reset to defaults</a>
+    </div>
   </div>
-</div>
+</form>
 </body>
 </html>
