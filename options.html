@@ -57,9 +57,13 @@ $(document).ready(function(){
   $('#pendingCount').val(LiquidChrome.defaults.pendingCount).change(saveIntegerOption('pendingCount'));
   $('#showAllComments').attr('checked', LiquidChrome.defaults.showAllComments).change(saveBooleanOption('showAllComments'));
   
-  // Hookup page controls
+  // Hook up page controls
   $('#showAdvancedOptions').click(function(){ $(this).hide(); $('#advancedOptions').toggle('slide'); });
-  $('#resetOptions').click(LiquidChrome.resetOptions);
+  $('#resetOptions').click(function(){
+    var ok = confirm("Are your sure you want to reset your settings?")
+    if(ok){LiquidChrome.resetOptions();}
+    return ok;
+  });
 });
 
 </script>
