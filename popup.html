@@ -21,25 +21,29 @@ function showTasks(tasks, status) {
     
     html.attr({'href': url}).find('.name').text(task.name);
     
-    if(task.low_effort_remaining && task.high_effort_remaining){
-      html.find('.estimate').text('estimate: ' + task.low_effort_remaining + '-' + task.high_effort_remaining);
-    }
+    if(task.is_done){
+      done_tasks.append(html);
+    } else {
+      if(task.low_effort_remaining && task.high_effort_remaining){
+        html.find('.estimate').text('estimate: ' + task.low_effort_remaining + '-' + task.high_effort_remaining);
+      }
     
-    if(task.promise_by){
-      var date = task.promise_by.split("T")[0];
-      html.find('.promise').text('due: ' + date);
-    }
+      if(task.promise_by){
+        var date = task.promise_by.split("T")[0];
+        html.find('.promise').text('due: ' + date);
+      }
     
-    if(task.alerts && task.alerts.length > 0){
-      var severity = {'red': 2, 'yellow': 1, 'none': 0};
-      var flag = task.alerts.reduce(function(prev, alert){ 
-        var curr = alert.flag;
-        return severity[prev] > severity[curr] ? prev : curr;
-      }, 'none');
-      html.addClass(flag+'_flag');
+      if(task.alerts && task.alerts.length > 0){
+        var severity = {'red': 2, 'yellow': 1, 'none': 0};
+        var flag = task.alerts.reduce(function(prev, alert){ 
+          var curr = alert.flag;
+          return severity[prev] > severity[curr] ? prev : curr;
+        }, 'none');
+        html.addClass(flag+'_flag');
+      }
+      
+      pending_tasks.append(html);
     }
-        
-    (task.is_done ? done_tasks : pending_tasks).append(html);    
   }
 }
 
