@@ -3,7 +3,7 @@ Features:
   - If a workspace has not been chosen yet, direct the user to the options page @done
   - Limits on done items shown @done
   - Limits on pending items shown @done
-  - Include chatter @maybe
+  - Include chatter @maybe @done
 
   Notifications:
   - Change icon when there are red flagged items @maybe

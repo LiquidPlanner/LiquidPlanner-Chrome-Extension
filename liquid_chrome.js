@@ -43,7 +43,8 @@ function route(url, params){
 */
 function resource(url){
   res = function(options){
-    $.ajax($.extend({'url': route(url, options.params), dataType: 'json'}, options));
+    options = $.extend({'url': route(url, options.params), dataType: 'json'}, options);
+    $.ajax(options);
   };
   
   res.url = url;
@@ -60,7 +61,7 @@ LiquidChrome.isConfigured = function(){
 // Load any stored options
 LiquidChrome.loadOptions();
 
-// Set up some default resources
+// Define the resources we will be using.
 LiquidChrome.tasks      = resource(':host/:api_path/workspaces/:space_id/tasks/');
 LiquidChrome.task       = resource(':host/:api_path/workspaces/:space_id/tasks/:task_id');
 LiquidChrome.workspaces = resource(':host/:api_path/workspaces/');
