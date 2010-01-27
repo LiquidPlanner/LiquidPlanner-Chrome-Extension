@@ -13,10 +13,10 @@ body#options{
   margin: 2em;
 }
 
-#options fieldset{
+body#options fieldset{
   border: none;
 }
-#options legend{
+body#options legend{
   font-weight: bold;
   color: #666;
   border: none;
@@ -25,11 +25,16 @@ body#options{
   margin: 0px;
 }
 
-.message{
-  color: GrayText;
+a, a:visited {
+  color:ButtonText;
+}
+a:hover {
+  color: HighlightText;
+  background-color: Highlight; 
+  -webkit-border-radius: 2px;
 }
 
-#tasks, #done_tasks{
+.section{
   margin: 4px 0px;
 }
 
@@ -58,22 +63,16 @@ body#options{
   overflow-x: hidden;
 }
 
+/* Special styling for done tasks and tasks with alerts */
 .task.red_flag{     background-image: url('images/red_flag.png');    }
 .task.yellow_flag{  background-image: url('images/yellow_flag.png'); }
-#done_tasks .task{  background-image: url('images/done.png'); color: GrayText; }
+#done_tasks .task{  background-image: url('images/done.png');       color: GrayText; }
 
 .task .info,
 .comment .info {
   font-size: 0.8em;
   white-space: nowrap;
   overflow-x: hidden;
-}
-
-a, a:visited {
-  color:ButtonText;
-}
-a:hover {
-  background-color: Highlight; color: HighlightText;
 }
 
 .info { color: GrayText; }

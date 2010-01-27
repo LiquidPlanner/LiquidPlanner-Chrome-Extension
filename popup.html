@@ -13,7 +13,7 @@ function showTasks(tasks, status) {
   var done_tasks = $('#done_tasks');
   var baseTemplate = $('#templates .task');
   
-  $('#popup .message').hide();
+  $('#message').hide();
   
   for (var i = 0, task; task = tasks[i]; i++) {
     html = baseTemplate.clone();
@@ -53,7 +53,7 @@ function showComments(comments, status) {
   var chatter = $('#comments');
   var baseTemplate = $('#templates .comment');
     
-  $('#popup .message').hide();
+  $('#message').hide();
   
   for (var i = 0, comment; comment = comments[i]; i++) {
     html = baseTemplate.clone();
@@ -87,7 +87,7 @@ function storeMembers(members){
 }
 
 function showConfigureRequest(){
-  $('#popup .message').html( 
+  $('#message').removeClass('info').html( 
     $('<a class="menu_item" href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') 
   );
 }
@@ -142,15 +142,12 @@ $(document).ready(function(){
 
 </head>
 <body id='popup'>  
-  <div class='message'>Loading...</div>
+  <div id='message' class='info'>Loading...</div>
   
-  <div id='comments'>
-  </div>
+  <div class='section' id='comments'></div>  
+  <div class='section' id='pending_tasks'></div>
+  <div class='section' id='done_tasks'></div>
   
-  <div id='tasks'>
-    <div id='pending_tasks'></div>
-    <div id='done_tasks'></div>
-  </div>
   
   <!-- The following are templates used to render Tasks and Comments -->
   <div style='display: none' id='templates'>
