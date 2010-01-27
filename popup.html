@@ -2,7 +2,7 @@
 <head>
 <title>LiquidChrome Options</title>
 <link rel="stylesheet" href="/style.css" type="text/css" charset="utf-8">
-<script src='jquery-1.3.1.js'></script>
+<script src='jquery-1.4.1.js'></script>
 <script src='liquid_chrome.js'></script>
 <script>
 
@@ -99,7 +99,7 @@ $(document).ready(function(){
         success:  showTasks,
         error:    showError, 
         data:{
-          'filter[]': ['owner_id = me', 'done is false'],
+          'filter':   ['owner_id = me', 'done is false'],
           'limit':    LiquidChrome.defaults.pendingCount,
           'order':    'earliest_start'
       }});
@@ -110,7 +110,7 @@ $(document).ready(function(){
         success:  showTasks,
         error:    showError, 
         data:{
-          'filter[]': ['owner_id = me', 'done is true'],
+          'filter':   ['owner_id = me', 'done is true'],
           'limit':    LiquidChrome.defaults.doneCount,
           'order':    'updated_at'
       }});
