@@ -77,6 +77,5 @@ LiquidChrome.showTaskUrl= ':host/space/:space_id/organize/show/:task_id';
 */
 function showError(req, status, err) {  
   console.log(req, status, err);
-  console.log('configuration:', LiquidChrome.defaults);
   $(document.body).append('<div class="error">Could not access LiquidPlanner.</div>');
 }

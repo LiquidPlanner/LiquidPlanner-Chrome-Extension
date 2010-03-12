@@ -92,6 +92,13 @@ function showConfigureRequest(){
   );
 }
 
+function showLoginRequest(){
+  var url = route(':host',{});
+  $('#message').removeClass('info').html( 
+    $('<a class="menu_item" href="'+url+'" target="_liquid_chrome"></a>').text('Please log into LiquidPlanner') 
+  );
+}
+
 $(document).ready(function(){  
   if(LiquidChrome.isConfigured()){
     if(LiquidChrome.defaults.pendingCount > 0){
@@ -133,6 +140,8 @@ $(document).ready(function(){
         }
       });
     }
+    
+    setTimeout(showLoginRequest,5000);
     
   } else {
     showConfigureRequest();
