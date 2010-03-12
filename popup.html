@@ -145,7 +145,6 @@ $(document).ready(function(){
           storeMembers(members);
           LiquidChrome.chatter({
             success:  showComments,
-            error:    showError, 
             data:{
               'ignore_mine': LiquidChrome.defaults.ignoreMyComments,
               'for_me':      !LiquidChrome.defaults.showAllComments,
