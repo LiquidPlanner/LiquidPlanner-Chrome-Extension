@@ -76,4 +76,4 @@ a:hover {
 }
 
 .info { color: GrayText; }
-.error{ color: red; }
+#error, .error{ color: red; }

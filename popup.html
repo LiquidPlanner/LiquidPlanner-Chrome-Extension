@@ -99,12 +99,27 @@ function showLoginRequest(){
   );
 }
 
-$(document).ready(function(){  
+
+$(document).ready(function(){
+  // Register a global Ajax error handler.
+  $('#error').ajaxError(function(event, request, settings){
+    console.log('error', event, request, settings);
+    if( (request.readyState == 0 || request.readyState == 1) && settings.timeout){
+      // This was probably a case of chrome getting a 401 response, but supressing the
+      // HTTP Basic Auth dialog.  If so, direct the user to log into LiquidPlanner.
+      // This is a chrome extension specific issue.
+      showLoginRequest();
+    } else {
+      // Otherwise, report that there was an error 
+      $(this).html("Could not load LiquidPlanner data").show();
+    }
+  });
+  
   if(LiquidChrome.isConfigured()){
     if(LiquidChrome.defaults.pendingCount > 0){
       LiquidChrome.tasks({
         success:  showTasks,
-        error:    showError, 
+        timeout:  3500, 
         data:{
           'filter':   ['owner_id = me', 'done is false'],
           'limit':    LiquidChrome.defaults.pendingCount,
@@ -114,8 +129,8 @@ $(document).ready(function(){
     
     if(LiquidChrome.defaults.doneCount > 0){
       LiquidChrome.tasks({
-        success:  showTasks,
-        error:    showError, 
+        success:  showTasks, 
+        timeout:  3500,
         data:{
           'filter':   ['owner_id = me', 'done is true'],
           'limit':    LiquidChrome.defaults.doneCount,
@@ -125,10 +140,9 @@ $(document).ready(function(){
     
     if(LiquidChrome.defaults.commentCount > 0){
       LiquidChrome.members({
-        error: showError,
         success: function(members){
           storeMembers(members);
-        
+          timeout:  3500,
           LiquidChrome.chatter({
             success:  showComments,
             error:    showError, 
@@ -139,10 +153,7 @@ $(document).ready(function(){
           }});
         }
       });
-    }
-    
-    setTimeout(showLoginRequest,5000);
-    
+    }    
   } else {
     showConfigureRequest();
   }
@@ -152,6 +163,7 @@ $(document).ready(function(){
 </head>
 <body id='popup'>  
   <div id='message' class='info'>Loading...</div>
+  <div id='error'   class='error'></div>
   
   <div class='section' id='comments'></div>  
   <div class='section' id='pending_tasks'></div>
