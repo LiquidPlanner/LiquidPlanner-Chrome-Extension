@@ -7,7 +7,9 @@
 
 <script type="text/javascript">
 
-function showWorkSpaces(spaces, status) {
+// Callback uses to render the list of workspaces.
+// `spaces` is an array of JSON data.
+function showWorkSpaces(spaces) {
   var html = $('#workspaces');
   var currentId = LiquidChrome.defaults.url.space_id;
   
@@ -20,12 +22,15 @@ function showWorkSpaces(spaces, status) {
   updateSpaceId();
 }
 
+// updates the default space id and stores the options
 function updateSpaceId(){
   var spaceId = $('#workspaces').val();
   LiquidChrome.defaults.url.space_id = spaceId;
   LiquidChrome.saveOptions();
 }
 
+// extracts an integer value and saves it in the LiquidChrome options,
+// name is both the id of the input, and the options key.
 function saveIntegerOption(name){
   return function(){
     var input = $('#'+name);
@@ -38,23 +43,28 @@ function saveIntegerOption(name){
   };
 }
 
+// extracts a boolean value and saves it in the LiquidChrome options,
+// name is both the id of the input, and the options key.
 function saveBooleanOption(name){
   return function(){
     var input = $('#'+name);
-    var val = input.attr('checked')
+    var val = input.attr('checked');
 
     LiquidChrome.defaults[name] = val;
     LiquidChrome.saveOptions();
   };
 }
 
+// Register event listeners and fetch the list of workspaces
 $(document).ready(function(){
   $('#error').ajaxError(function(event, request, settings){
     // unlike popup.html, options.html should have no issue with prompting for credentials
     $(this).html("Could not load LiquidPlanner data").show();
   });
   
+  // Load the user's workspaces
   LiquidChrome.workspaces({success: showWorkSpaces});
+  
   $('#workspaces').change(updateSpaceId);
   // Setup serializing and deserializing advanced options
   $('#commentCount').val(LiquidChrome.defaults.commentCount).change(saveIntegerOption('commentCount'));
@@ -65,7 +75,7 @@ $(document).ready(function(){
   // Hook up page controls
   $('#showAdvancedOptions').click(function(){ $(this).hide(); $('#advancedOptions').toggle('slide'); });
   $('#resetOptions').click(function(){
-    var ok = confirm("Are your sure you want to reset your settings?")
+    var ok = confirm("Are your sure you want to reset your settings?");
     if(ok){LiquidChrome.resetOptions();}
     return ok;
   });
