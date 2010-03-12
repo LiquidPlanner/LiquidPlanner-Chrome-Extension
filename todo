@@ -7,8 +7,8 @@ Features:
 
   Notifications:
   - Change icon when there are red flagged items @maybe
-  - New task notification @maybe
-  - New chatter notification @maybe
+  - New task notification @maybe @background
+  - New chatter notification @maybe @background
 
   Task Management:
   - Mark done via menu
@@ -16,4 +16,10 @@ Features:
   
 Polish:
 - Replace favicon.ico with alpha masked png @done
-- Cleanup JS @done
+- Handle session issues @done
+- Documentation
+- Cleanup JS @ongoing
+- Update jQuery to 1.4.2 (or newer)
+
+External:
+- Report Chrome http basic auth issue with browser actions and background pages
