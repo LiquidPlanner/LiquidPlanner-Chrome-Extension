@@ -54,19 +54,19 @@ a:hover {
 
 .comment{
   overflow: hidden;
-  background: url('images/comment.png') no-repeat 6px 6px;
+  background: url('/images/comment.png') no-repeat 6px 6px;
 }
 
 .task {
-  background: url('images/task.png') no-repeat 6px 6px;
+  background: url('/images/task.png') no-repeat 6px 6px;
   white-space: nowrap;
   overflow-x: hidden;
 }
 
 /* Special styling for done tasks and tasks with alerts */
-.task.red_flag{     background-image: url('images/red_flag.png');    }
-.task.yellow_flag{  background-image: url('images/yellow_flag.png'); }
-#done_tasks .task{  background-image: url('images/done.png');       color: GrayText; }
+.task.red_flag{     background-image: url('/images/red_flag.png');    }
+.task.yellow_flag{  background-image: url('/images/yellow_flag.png'); }
+#done_tasks .task{  background-image: url('/images/done.png');       color: GrayText; }
 
 .task .info,
 .comment .info {
