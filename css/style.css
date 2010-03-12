@@ -77,3 +77,9 @@ a:hover {
 
 .info { color: GrayText; }
 #error, .error{ color: red; }
+#loading{ 
+  position: absolute; top: 0; right: 0;
+  background: #bbb;
+  color: #fff;
+  padding: 0.4em;
+}

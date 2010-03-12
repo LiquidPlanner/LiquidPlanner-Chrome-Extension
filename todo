@@ -17,7 +17,7 @@ Features:
 Polish:
 - Replace favicon.ico with alpha masked png @done
 - Handle session issues @done
-- Documentation
+- Documentation @done
 - Cleanup JS @ongoing
 - Update jQuery to 1.4.2 (or newer)
 

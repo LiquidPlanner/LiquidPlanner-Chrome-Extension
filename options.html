@@ -14,9 +14,14 @@ function showWorkSpaces(spaces) {
   var currentId = LiquidChrome.defaults.url.space_id;
   
   for (var i = 0, space; space = spaces[i]; i++) {
-    var opt = $('<option>').attr('value', space.id).text(space.name);
-    if(space.id == currentId){opt.attr('selected', 'selected');}
-    html.append(opt);
+    var isSelected = (space.id == currentId);
+
+    html.append(
+      $('<option>')
+        .attr('value', space.id)
+        .attr('selected', isSelected ? 'selected' : '')
+        .text(space.name)
+    );
   }
   
   updateSpaceId();
@@ -57,33 +62,59 @@ function saveBooleanOption(name){
 
 // Register event listeners and fetch the list of workspaces
 $(document).ready(function(){
-  $('#error').ajaxError(function(event, request, settings){
-    // unlike popup.html, options.html should have no issue with prompting for credentials
-    $(this).html("Could not load LiquidPlanner data").show();
-  });
+  
+  // Register an ajax exception observer:
+  $('#error')
+    .ajaxError( function(event, request, settings){
+      $(this).html("Could not load LiquidPlanner data").show();
+    });
+  
+  // Register a generic ajax observer:
+  $('#loading')
+    .ajaxSend(function(){ $(this).fadeIn('fast'); })
+    .ajaxStop(function(){ $(this).fadeOut('fast');});
   
   // Load the user's workspaces
   LiquidChrome.workspaces({success: showWorkSpaces});
   
-  $('#workspaces').change(updateSpaceId);
-  // Setup serializing and deserializing advanced options
-  $('#commentCount').val(LiquidChrome.defaults.commentCount).change(saveIntegerOption('commentCount'));
-  $('#doneCount').val(LiquidChrome.defaults.doneCount).change(saveIntegerOption('doneCount'));
-  $('#pendingCount').val(LiquidChrome.defaults.pendingCount).change(saveIntegerOption('pendingCount'));
-  $('#showAllComments').attr('checked', LiquidChrome.defaults.showAllComments).change(saveBooleanOption('showAllComments'));
+  // Set up the options and their observers:
+  $('#workspaces')
+    .change(updateSpaceId);
+  
+  $('#commentCount')
+    .val(LiquidChrome.defaults.commentCount)
+    .change(saveIntegerOption('commentCount'));
+    
+  $('#doneCount')
+    .val(LiquidChrome.defaults.doneCount)
+    .change(saveIntegerOption('doneCount'));
+    
+  $('#pendingCount')
+    .val(LiquidChrome.defaults.pendingCount)
+    .change(saveIntegerOption('pendingCount'));
+    
+  $('#showAllComments')
+    .attr('checked', LiquidChrome.defaults.showAllComments)
+    .change(saveBooleanOption('showAllComments'));
   
   // Hook up page controls
-  $('#showAdvancedOptions').click(function(){ $(this).hide(); $('#advancedOptions').toggle('slide'); });
-  $('#resetOptions').click(function(){
-    var ok = confirm("Are your sure you want to reset your settings?");
-    if(ok){LiquidChrome.resetOptions();}
-    return ok;
-  });
+  $('#showAdvancedOptions')
+    .click(function(){ 
+      $(this).hide(); $('#advancedOptions').toggle('slide'); 
+    });
+    
+  $('#resetOptions')
+    .click(function(){
+      var ok = confirm("Are your sure you want to reset your settings?");
+      if(ok){LiquidChrome.resetOptions();}
+      return ok;
+    });
 });
 
 </script>
 </head>
 <body id='options'>
+<div id='loading' style='display:none;'>loading</div>
 
 <h1>LiquidChrome Options</h1>
 <form>
