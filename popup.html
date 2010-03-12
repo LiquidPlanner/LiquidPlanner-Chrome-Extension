@@ -90,35 +90,52 @@ function storeMembers(members){
 
 // If the user has not yet picked a defualt space, we show this message.
 function showConfigureRequest(){
-  $('#message').removeClass('info').html( 
-    $('<a class="menu_item" href="options.html" target="_liquid_chrome"></a>').text('Configure LiquidChrome') 
-  );
+  $('#message').html( 
+    $('<a>',
+      {
+        'class': 'menu_item',
+        'href': 'options.html',
+        'target': '_liquid_chrome'
+      }).text('Please configure LiquidPlanner')
+  ).fadeIn('fast');
 }
 
 // If the user does not currently have a session or HTTP Basic Auth credentials, then we direct them to
 // LiquidPlanner.
 function showLoginRequest(){
-  var url = route(':host',{});
-  $('#message').removeClass('info').html( 
-    $('<a class="menu_item" href="'+url+'" target="_liquid_chrome"></a>').text('Please log into LiquidPlanner') 
-  );
+  $('#message').html( 
+    $('<a>',
+      {
+        'class': 'menu_item',
+        'href': route(':host'),
+        'target': '_liquid_chrome'
+      }).text('Please log into LiquidPlanner')
+  ).fadeIn('fast');
 }
 
 
 $(document).ready(function(){
   // Register a global Ajax error handler.
-  $('#error').ajaxError(function(event, request, settings){
-    console.log('error', event, request, settings);
-    if( (request.readyState == 0 || request.readyState == 1) && settings.timeout){
-      // This was probably a case of chrome getting a 401 response, but supressing the
-      // HTTP Basic Auth dialog.  If so, direct the user to log into LiquidPlanner.
-      // This is a chrome extension specific issue.
-      showLoginRequest();
-    } else {
-      // Otherwise, report that there was an error 
-      $(this).html("Could not load LiquidPlanner data").show();
-    }
-  });
+  // If Chrome receives a 401 response, it will not display the standard
+  // HTTP Basic Auth dialog.  Instead it will just sit here.  
+  // If so, direct the user to log into LiquidPlanner.
+  $('#error')
+    .ajaxError(
+      function(event, request, settings){
+        console.log('error', event, request, settings);
+        var authIssue = (request.readyState == 0 || request.readyState == 1) && settings.timeout;
+        if( authIssue ){
+          showLoginRequest();
+        } else {
+          $(this).html("Could not load LiquidPlanner data").fadeIn('fast');
+        }
+      }
+    );
+  
+  // Register a generic ajax observer:
+  $('#loading')
+    .ajaxSend(function(){ $(this).fadeIn('fast'); })
+    .ajaxStop(function(){ $(this).fadeOut('fast');});
   
   if(!LiquidChrome.isConfigured()){
     showConfigureRequest();
@@ -169,8 +186,9 @@ $(document).ready(function(){
 
 </head>
 <body id='popup'>  
-  <div id='message' class='info'>Loading...</div>
-  <div id='error'   class='error'></div>
+  <div id='loading' style='display:none;'>loading</div>
+  <div id='message' style='display:none;'></div>
+  <div id='error'   style='display:none;'></div>
   
   <div class='section' id='comments'></div>  
   <div class='section' id='pending_tasks'></div>
