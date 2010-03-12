@@ -71,11 +71,3 @@ LiquidChrome.chatter    = resource(':host/:api_path/workspaces/:space_id/chatter
 
 // Add a url we will use later to show tasks in LiquidPlanner
 LiquidChrome.showTaskUrl= ':host/space/:space_id/organize/show/:task_id';
-
-/**
-  Generic AJAX error handler.
-*/
-function showError(req, status, err) {  
-  console.log(req, status, err);
-  $(document.body).append('<div class="error">Could not access LiquidPlanner.</div>');
-}

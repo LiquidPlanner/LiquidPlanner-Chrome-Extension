@@ -49,7 +49,12 @@ function saveBooleanOption(name){
 }
 
 $(document).ready(function(){
-  LiquidChrome.workspaces({success: showWorkSpaces, error: showError});
+  $('#error').ajaxError(function(event, request, settings){
+    // unlike popup.html, options.html should have no issue with prompting for credentials
+    $(this).html("Could not load LiquidPlanner data").show();
+  });
+  
+  LiquidChrome.workspaces({success: showWorkSpaces});
   $('#workspaces').change(updateSpaceId);
   // Setup serializing and deserializing advanced options
   $('#commentCount').val(LiquidChrome.defaults.commentCount).change(saveIntegerOption('commentCount'));
@@ -112,5 +117,7 @@ $(document).ready(function(){
     </div>
   </div>
 </form>
+<div id='message' class='info'></div>
+<div id='error'   class='error'></div>
 </body>
 </html>

@@ -140,9 +140,9 @@ $(document).ready(function(){
     
     if(LiquidChrome.defaults.commentCount > 0){
       LiquidChrome.members({
+        timeout:  3500,
         success: function(members){
           storeMembers(members);
-          timeout:  3500,
           LiquidChrome.chatter({
             success:  showComments,
             error:    showError, 
