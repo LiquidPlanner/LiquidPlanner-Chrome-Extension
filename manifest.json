@@ -1,5 +1,5 @@
 {
-  "name": "LiquidChrome",
+  "name": "LiquidPlanner",
   "version": "1.0",
   "options_page": "options.html",
   "description": "Get your LiquidPlanner Tasks in Google Chrome",
@@ -7,6 +7,10 @@
     "default_icon": "images/icon.png",
     "popup": "popup.html"
   },
+	"icons": { "16": "images/icon.png",
+						 "32": "images/icon-32.png",
+	           "48": "images/icon-48.png",
+	          "128": "images/icon-128.png"},
   "permissions": [
     "https://*.liquidplanner.com/",
     "https://*.liquidplannerlab.com/"

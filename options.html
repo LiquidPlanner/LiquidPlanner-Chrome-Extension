@@ -1,9 +1,9 @@
 <html>
 <head>
-<title>LiquidChrome Options</title>
+<title>LiquidPlanner Options</title>
 <link rel="stylesheet" href="/css/style.css" type="text/css" charset="utf-8">
 <script src='/lib/jquery-1.4.1.js'></script>
-<script src='/js/liquid_chrome.js'></script>
+<script src='/js/liquid_planner.js'></script>
 
 <script type="text/javascript">
 
@@ -11,7 +11,7 @@
 // `spaces` is an array of JSON data.
 function showWorkSpaces(spaces) {
   var html = $('#workspaces');
-  var currentId = LiquidChrome.defaults.url.space_id;
+  var currentId = LiquidPlanner.defaults.url.space_id;
   
   for (var i = 0, space; space = spaces[i]; i++) {
     var isSelected = (space.id == currentId);
@@ -30,11 +30,11 @@ function showWorkSpaces(spaces) {
 // updates the default space id and stores the options
 function updateSpaceId(){
   var spaceId = $('#workspaces').val();
-  LiquidChrome.defaults.url.space_id = spaceId;
-  LiquidChrome.saveOptions();
+  LiquidPlanner.defaults.url.space_id = spaceId;
+  LiquidPlanner.saveOptions();
 }
 
-// extracts an integer value and saves it in the LiquidChrome options,
+// extracts an integer value and saves it in the LiquidPlanner options,
 // name is both the id of the input, and the options key.
 function saveIntegerOption(name){
   return function(){
@@ -43,20 +43,20 @@ function saveIntegerOption(name){
     val = val > 0 ? val : 0;
     input.val(val);
     
-    LiquidChrome.defaults[name] = val;
-    LiquidChrome.saveOptions();
+    LiquidPlanner.defaults[name] = val;
+    LiquidPlanner.saveOptions();
   };
 }
 
-// extracts a boolean value and saves it in the LiquidChrome options,
+// extracts a boolean value and saves it in the LiquidPlanner options,
 // name is both the id of the input, and the options key.
 function saveBooleanOption(name){
   return function(){
     var input = $('#'+name);
     var val = input.attr('checked');
 
-    LiquidChrome.defaults[name] = val;
-    LiquidChrome.saveOptions();
+    LiquidPlanner.defaults[name] = val;
+    LiquidPlanner.saveOptions();
   };
 }
 
@@ -75,26 +75,26 @@ $(document).ready(function(){
     .ajaxStop(function(){ $(this).fadeOut('fast');});
   
   // Load the user's workspaces
-  LiquidChrome.workspaces({success: showWorkSpaces});
+  LiquidPlanner.workspaces({success: showWorkSpaces});
   
   // Set up the options and their observers:
   $('#workspaces')
     .change(updateSpaceId);
   
   $('#commentCount')
-    .val(LiquidChrome.defaults.commentCount)
+    .val(LiquidPlanner.defaults.commentCount)
     .change(saveIntegerOption('commentCount'));
     
   $('#doneCount')
-    .val(LiquidChrome.defaults.doneCount)
+    .val(LiquidPlanner.defaults.doneCount)
     .change(saveIntegerOption('doneCount'));
     
   $('#pendingCount')
-    .val(LiquidChrome.defaults.pendingCount)
+    .val(LiquidPlanner.defaults.pendingCount)
     .change(saveIntegerOption('pendingCount'));
     
   $('#showAllComments')
-    .attr('checked', LiquidChrome.defaults.showAllComments)
+    .attr('checked', LiquidPlanner.defaults.showAllComments)
     .change(saveBooleanOption('showAllComments'));
   
   // Hook up page controls
@@ -106,7 +106,7 @@ $(document).ready(function(){
   $('#resetOptions')
     .click(function(){
       var ok = confirm("Are your sure you want to reset your settings?");
-      if(ok){LiquidChrome.resetOptions();}
+      if(ok){LiquidPlanner.resetOptions();}
       return ok;
     });
 });
@@ -116,12 +116,12 @@ $(document).ready(function(){
 <body id='options'>
 <div id='loading' style='display:none;'>loading</div>
 
-<h1>LiquidChrome Options</h1>
+<h1>LiquidPlanner Options</h1>
 <form>
   <div class='option'>
     <label>Use Workspace: <select id="workspaces"></select></label>
     <p class='info'>
-      This workspace will be used to list tasks on the LiquidChrome menu (<img src='/images/icon.png'/>)
+      This workspace will be used to list tasks on the LiquidPlanner menu (<img src='/images/icon.png'/>)
     </p>
   </div>
 

@@ -1,4 +1,4 @@
-LiquidChrome
+LiquidPlanner
 ============
 
 This extension is meant to provide useful functionality in Chrome,
@@ -6,7 +6,7 @@ and to serve as an example of accessing the LiquidPlanner API.
 
 Key Files
 ---------
-`liquid_chrome.js` is responsible for accessing the LiquidPlanner API.
+`liquid_planner.js` is responsible for accessing the LiquidPlanner API.
 `options.html` and `popup.html` define the interface for the extension options and the 
 popup menu respectively.
 
@@ -14,15 +14,15 @@ Using the LiquidPlanner API
 ----------------------------
 LiquidPlanner exposes a lot of its functionality through a RESTful API.
 The extension uses four resources workspaces, workspace members,
-comments, and tasks.  We define a `resource` function in `liquid_chrome.js` to facilitate
+comments, and tasks.  We define a `resource` function in `liquid_planner.js` to facilitate
 fetching resources from the LiquidPlanner API.  This is then used to set up the resources we
 might want to access:
   
-    LiquidChrome.workspaces = resource(':host/:api_path/workspaces/');
+    LiquidPlanner.workspaces = resource(':host/:api_path/workspaces/');
 
-Now we can call `LiquidChrome.workspaces` to get a list of workspaces.
+Now we can call `LiquidPlanner.workspaces` to get a list of workspaces.
 
-    LiquidChrome.workspaces({success: showWorkSpaces});
+    LiquidPlanner.workspaces({success: showWorkSpaces});
     
 The `success` option defines the callback to use, in this case it is `showWorkSpaces`.
   
@@ -38,8 +38,8 @@ Normal Javascript objects are then passed into `showWorkSpaces`:
       ...
     }
 
-This pattern is repeated throughout the LiquidChrome plugin.
-For more information, see "LiquidChrome Resource Management" in `liquid_chrome.js`.
+This pattern is repeated throughout the LiquidPlanner plugin.
+For more information, see "LiquidPlanner Resource Management" in `liquid_planner.js`.
 
     adam sanderson, LiquidPlanner
     adam@liquidplanner.com

@@ -1,9 +1,9 @@
 <html>
 <head>
-<title>LiquidChrome Options</title>
+<title>LiquidPlanner Options</title>
 <link rel="stylesheet" href="/css/style.css" type="text/css" charset="utf-8">
 <script src='/lib/jquery-1.4.1.js'></script>
-<script src='/js/liquid_chrome.js'></script>
+<script src='/js/liquid_planner.js'></script>
 
 <script>
 
@@ -18,7 +18,7 @@ function showTasks(tasks) {
   
   for (var i = 0, task; task = tasks[i]; i++) {
     html = baseTemplate.clone();
-    url = route(LiquidChrome.showTaskUrl, {task_id: task.id});
+    url = route(LiquidPlanner.showTaskUrl, {task_id: task.id});
     
     html.attr({'href': url}).find('.name').text(task.name);
     
@@ -30,8 +30,7 @@ function showTasks(tasks) {
       }
     
       if(task.promise_by){
-        var date = task.promise_by.split("T")[0];
-        html.find('.promise').text('due: ' + date);
+        html.find('.promise').text('due: ' + task.promise_by);
       }
     
       if(task.alerts && task.alerts.length > 0){
@@ -58,14 +57,14 @@ function showComments(comments) {
   
   for (var i = 0, comment; comment = comments[i]; i++) {
     html = baseTemplate.clone();
-    url = route(LiquidChrome.showTaskUrl, {task_id: comment.item_id});
+    url = route(LiquidPlanner.showTaskUrl, {task_id: comment.item_id});
     text = comment.plain_text.slice(0,72);
     if(text != comment.plain_text){
       text = text + '...';
     }
     
     html.attr({'href': url}).find('.text').text(text);
-    author = LiquidChrome.members[comment.member_id] || LiquidChrome.members[0];
+    author = LiquidPlanner.members[comment.member_id] || LiquidPlanner.members[0];
     task   = comment.treeitem;
     if(author){ 
       html.find('.author').text(author.user_name); 
@@ -82,9 +81,9 @@ function showComments(comments) {
 // Stores the workspace members as a hash.  
 // These are used to display the member's name in comments the comments section.
 function storeMembers(members){
-  LiquidChrome.members = {};
+  LiquidPlanner.members = {};
   for (var i = 0, member; member = members[i]; i++) {
-    LiquidChrome.members[member.id] = member;
+    LiquidPlanner.members[member.id] = member;
   }
 }
 
@@ -95,7 +94,7 @@ function showConfigureRequest(){
       {
         'class': 'menu_item',
         'href': 'options.html',
-        'target': '_liquid_chrome'
+        'target': '_liquid_planner'
       }).text('Please configure LiquidPlanner')
   ).fadeIn('fast');
 }
@@ -108,7 +107,7 @@ function showLoginRequest(){
       {
         'class': 'menu_item',
         'href': route(':host'),
-        'target': '_liquid_chrome'
+        'target': '_liquid_planner'
       }).text('Please log into LiquidPlanner')
   ).fadeIn('fast');
 }
@@ -137,46 +136,46 @@ $(document).ready(function(){
     .ajaxSend(function(){ $(this).fadeIn('fast'); })
     .ajaxStop(function(){ $(this).fadeOut('fast');});
   
-  if(!LiquidChrome.isConfigured()){
+  if(!LiquidPlanner.isConfigured()){
     showConfigureRequest();
     return;
   }
   
-  if(LiquidChrome.defaults.pendingCount > 0){
-    LiquidChrome.tasks({
+  if(LiquidPlanner.defaults.pendingCount > 0){
+    LiquidPlanner.tasks({
       success:  showTasks,
       timeout:  3500, 
       data:{
         // This filter gets the user's active tasks
         'filter':   ['owner_id = me', 'done is false'],
-        'limit':    LiquidChrome.defaults.pendingCount,
+        'limit':    LiquidPlanner.defaults.pendingCount,
         'order':    'earliest_start'
     }});
   }
   
-  if(LiquidChrome.defaults.doneCount > 0){
-    LiquidChrome.tasks({
+  if(LiquidPlanner.defaults.doneCount > 0){
+    LiquidPlanner.tasks({
       success:  showTasks, 
       timeout:  3500,
       data:{
         // This filter gets the user's recently done tasks
         'filter':   ['owner_id = me', 'done is true'],
-        'limit':    LiquidChrome.defaults.doneCount,
+        'limit':    LiquidPlanner.defaults.doneCount,
         'order':    'updated_at'
     }});
   }
   
-  if(LiquidChrome.defaults.commentCount > 0){
-    LiquidChrome.members({
+  if(LiquidPlanner.defaults.commentCount > 0){
+    LiquidPlanner.members({
       timeout:  3500,
       success: function(members){
         storeMembers(members);
-        LiquidChrome.chatter({
+        LiquidPlanner.chatter({
           success:  showComments,
           data:{
-            'ignore_mine': LiquidChrome.defaults.ignoreMyComments,
-            'for_me':      !LiquidChrome.defaults.showAllComments,
-            'limit':       LiquidChrome.defaults.commentCount
+            'ignore_mine': LiquidPlanner.defaults.ignoreMyComments,
+            'for_me':      !LiquidPlanner.defaults.showAllComments,
+            'limit':       LiquidPlanner.defaults.commentCount
         }});
       }
     });
@@ -197,7 +196,7 @@ $(document).ready(function(){
   
   <!-- The following are templates used to render Tasks and Comments -->
   <div style='display: none' id='templates'>
-    <a class='task menu_item' target='_liquid_chrome' href=''>
+    <a class='task menu_item' target='_liquid_planner' href=''>
       <span class='name'>{name}</span>
       <div  class='info'>
         <span class='estimate'></span>
@@ -205,7 +204,7 @@ $(document).ready(function(){
       </div>
     </a>
     
-    <a class='comment menu_item' target='_liquid_chrome' href=''>
+    <a class='comment menu_item' target='_liquid_planner' href=''>
       <div class='text'>{comment}</div>
       <div class='info'>
           <span class='author'></span> <span class='taskname'></span>
