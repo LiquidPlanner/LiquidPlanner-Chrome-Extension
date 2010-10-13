@@ -112,7 +112,6 @@ function showLoginRequest(){
   ).fadeIn('fast');
 }
 
-
 $(document).ready(function(){
   // Register a global Ajax error handler.
   // If Chrome receives a 401 response, it will not display the standard
@@ -130,11 +129,6 @@ $(document).ready(function(){
         }
       }
     );
-  
-  // Register a generic ajax observer:
-  $('#loading')
-    .ajaxSend(function(){ $(this).fadeIn('fast'); })
-    .ajaxStop(function(){ $(this).fadeOut('fast');});
   
   if(!LiquidPlanner.isConfigured()){
     showConfigureRequest();
