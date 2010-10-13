@@ -86,4 +86,18 @@ LiquidPlanner.members    = resource(':host/:api_path/workspaces/:space_id/member
 LiquidPlanner.chatter    = resource(':host/:api_path/workspaces/:space_id/chatter');
 
 // Add a url we will use later to show tasks in LiquidPlanner
-LiquidPlanner.showTaskUrl= ':host/space/:space_id/organize/show/:task_id';
+LiquidPlanner.showTaskUrl= ':host/space/:space_id/collaborate/show/:task_id';
+
+$(document)
+	.ajaxSend(function(ev, xhr){ 
+		// To play nice with LiquidPlanner, it's a good idea to set the User-Agent or X-Requested-With header:
+	  xhr.setRequestHeader("X-Requested-With","LiquidPlannerChromeExtension");
+		chrome.browserAction.setIcon({
+			path: 'images/busy.png'
+		});	
+	})
+	.ajaxStop(function(){
+		chrome.browserAction.setIcon({
+			path: 'images/icon.png'
+		});
+	});

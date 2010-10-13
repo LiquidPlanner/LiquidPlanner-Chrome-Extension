@@ -1,6 +1,6 @@
 {
-  "name": "LiquidPlanner",
-  "version": "1.0",
+  "name": "LiquidPlanner Extension for Chrome",
+  "version": "1.0.1",
   "options_page": "options.html",
   "description": "Get your LiquidPlanner Tasks in Google Chrome",
   "browser_action": {
