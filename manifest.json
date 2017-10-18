@@ -6,7 +6,7 @@
   "description": "Get your LiquidPlanner Tasks in Google Chrome",
   "browser_action": {
     "default_icon": "images/icon.png",
-    "popup": "popup.html"
+    "default_popup": "popup.html"
   },
 	"icons": { "16": "images/icon.png",
 						 "32": "images/icon-32.png",
